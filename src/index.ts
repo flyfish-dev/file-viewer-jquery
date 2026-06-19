@@ -30,10 +30,30 @@ export type {
   ViewerToolbarOptions,
   ViewerToolbarPosition,
   ViewerTypstOptions,
-  ViewerWatermarkOptions
+  ViewerWatermarkOptions,
+  ViewerLifecycleContext,
+  ViewerOperationContext,
+  ViewerState,
+  ViewerStateListener
 } from './controller.js'
 
-export type JQueryFileViewerMethod = 'destroy' | 'reload' | 'load' | 'update'
+export type JQueryFileViewerMethod =
+  | 'destroy'
+  | 'reload'
+  | 'load'
+  | 'update'
+  | 'downloadOriginalFile'
+  | 'printRenderedHtml'
+  | 'exportRenderedHtml'
+  | 'zoomIn'
+  | 'zoomOut'
+  | 'resetZoom'
+  | 'searchDocument'
+  | 'clearDocumentSearch'
+  | 'nextSearchResult'
+  | 'previousSearchResult'
+  | 'scrollToAnchor'
+  | 'scrollToLine'
 
 export interface JQueryFileViewerOptions extends ViewerMountOptions {
   /**
@@ -133,6 +153,66 @@ const callControllerMethod = (
 
   if (method === 'load') {
     controller.load((args[0] || {}) as ViewerMountOptions)
+    return
+  }
+
+  if (method === 'downloadOriginalFile') {
+    controller.downloadOriginalFile()
+    return
+  }
+
+  if (method === 'printRenderedHtml') {
+    controller.printRenderedHtml()
+    return
+  }
+
+  if (method === 'exportRenderedHtml') {
+    controller.exportRenderedHtml()
+    return
+  }
+
+  if (method === 'zoomIn') {
+    controller.zoomIn()
+    return
+  }
+
+  if (method === 'zoomOut') {
+    controller.zoomOut()
+    return
+  }
+
+  if (method === 'resetZoom') {
+    controller.resetZoom()
+    return
+  }
+
+  if (method === 'searchDocument') {
+    controller.searchDocument(String(args[0] || ''))
+    return
+  }
+
+  if (method === 'clearDocumentSearch') {
+    controller.clearDocumentSearch()
+    return
+  }
+
+  if (method === 'nextSearchResult') {
+    controller.nextSearchResult()
+    return
+  }
+
+  if (method === 'previousSearchResult') {
+    controller.previousSearchResult()
+    return
+  }
+
+  if (method === 'scrollToAnchor') {
+    controller.scrollToAnchor(args[0] as Parameters<ViewerController['scrollToAnchor']>[0])
+    return
+  }
+
+  if (method === 'scrollToLine') {
+    controller.scrollToLine(Number(args[0]))
     return
   }
 
